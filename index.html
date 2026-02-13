@@ -1,40 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Buy Smart Expense Tracker</title>
-<style>
-body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
-</style>
-</head>
-<body>
-<h1>Smart Expense Tracker - $9.99</h1>
-<p>One-time buy. Instant download after payment.</p>
-
-<div id="paypal-button-container"></div>
-
-<script src="https://www.paypal.com/sdk/js?client-id=ATMXxwC5ZqPsnIN3zHK5BVkZw5RJI9b4CUOHDJxu
-fxA0C9E6n_L87gy0LHnQgMq2_xbNYo5_q3hIJxI&currency=USD"></script>
+<!-- Stripe.js library -->
+<script src="https://js.stripe.com/v3/"></script>
 <script>
-paypal.Buttons({
-  createOrder: function(data, actions) {
-    return actions.order.create({
-      purchase_units: [{
-        amount: {
-          value: '9.99'
-        }
-      }]
+    // Create a Stripe instance with your publishable key
+    var stripe = Stripe('pk_live_51RREUdGoVKymjRJc30rs5OT5cIV8jb5E6EJrCsN2upHcWo2zl9jKTCoTFKeiufby2CKblDTkXVe8SmYlcJtx8lck00LrgUzmBk');
+
+    // Set up your payment form here
+    const paymentForm = document.getElementById('payment-form');
+    paymentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+      
+        // Create a payment method and handle the response
+        stripe.createPaymentMethod({
+            type: 'card',
+            card: elements.getElement(CardElement),
+        }).then(function(result) {
+            if (result.error) {
+                // Display error.message in your UI.
+                console.error(result.error.message);
+            } else {
+                // Send the payment method to your server for processing
+                console.log('Payment Method created:', result.paymentMethod.id);
+                // Optionally handle the response from the server
+            }
+        });
     });
-  },
-  onApprove: function(data, actions) {
-    return actions.order.capture().then(function(details) {
-      alert('Payment successful! Thank you, ' + details.payer.name.given_name);
-      window.location.href = 'thank-you.html';
-    });
-  },
-  onError: function(err) {
-    alert('An error occurred during the transaction');
-  }
-}).render('#paypal-button-container');
 </script>
-</body>
-</html>
