@@ -2,6 +2,9 @@
 <html>
 <head>
 <title>Buy Smart Expense Tracker</title>
+<style>
+body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+</style>
 </head>
 <body>
 <h1>Smart Expense Tracker - $9.99</h1>
@@ -12,9 +15,26 @@
 <script src="https://www.paypal.com/sdk/js?client-id=ATMXxwC5ZqPsnIN3zHK5BVkZw5RJI9b4CUOHDJxu
 fxA0C9E6n_L87gy0LHnQgMq2_xbNYo5_q3hIJxI&currency=USD"></script>
 <script>
-paypal.Buttons({YOUR_CLIENT
-createOrder: function(data, actions) {
-
-return
-
-
+paypal.Buttons({
+  createOrder: function(data, actions) {
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: '9.99'
+        }
+      }]
+    });
+  },
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+      alert('Payment successful! Thank you, ' + details.payer.name.given_name);
+      window.location.href = 'thank-you.html';
+    });
+  },
+  onError: function(err) {
+    alert('An error occurred during the transaction');
+  }
+}).render('#paypal-button-container');
+</script>
+</body>
+</html>
