@@ -1,27 +1,92 @@
-<!-- Stripe.js library -->
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-    // Create a Stripe instance with your publishable key
-    var stripe = Stripe('pk_live_51RREUdGoVKymjRJc30rs5OT5cIV8jb5E6EJrCsN2upHcWo2zl9jKTCoTFKeiufby2CKblDTkXVe8SmYlcJtx8lck00LrgUzmBk');
-
-    // Set up your payment form here
-    const paymentForm = document.getElementById('payment-form');
-    paymentForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-      
-        // Create a payment method and handle the response
-        stripe.createPaymentMethod({
-            type: 'card',
-            card: elements.getElement(CardElement),
-        }).then(function(result) {
-            if (result.error) {
-                // Display error.message in your UI.
-                console.error(result.error.message);
-            } else {
-                // Send the payment method to your server for processing
-                console.log('Payment Method created:', result.paymentMethod.id);
-                // Optionally handle the response from the server
-            }
-        });
-    });
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy the Ultimate Expense Tracker!</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .countdown {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .testimonial {
+            margin: 30px 0;
+            font-style: italic;
+        }
+        .cta-button {
+            background-color: #ff5757;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.2s;
+            animation: pulse 1.5s infinite;
+        }
+        .cta-button:hover {
+            transform: scale(1.1);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .badge {
+            display: inline-block;
+            margin: 10px;
+        }
+        .video-placeholder {
+            margin: 40px 0;
+            background-color: #444;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Get the Ultimate Expense Tracker Now!</h1>
+    <div class="countdown" id="countdown">Expires in: 00:00:00</div>
+    <p><strong>💥 Limited Time Offer: 50% OFF - Just $9.99!</strong></p>
+    <img src="trust_badge.png" alt="Trust Badges" class="badge">
+    <img src="money_back_guarantee.png" alt="30-Day Money Back Guarantee" class="badge">
+    <h2>Testimonials</h2>
+    <div class="testimonial">"This software changed my financial life!" - Happy Customer</div>
+    <div class="testimonial">"So easy to use and effective!" - Satisfied User</div>
+    <div class="video-placeholder">[Video Section Placeholder]</div>
+    <p>🛒 Instant Download Guarantee!</p>
+    <button class="cta-button">Buy Now</button>
+    <h3>Payment via Stripe</h3>
+    <form id="payment-form">
+        <input type="text" name="customer_name" placeholder="Your Name" required />
+        <input type="email" name="customer_email" placeholder="Your Email" required />
+        <button type="submit">Pay with Stripe</button>
+    </form>
+    <script>
+        // Countdown Timer
+        const countdownElement = document.getElementById('countdown');
+        let countdownTime = 60 * 60; // 1 hour
+        setInterval(() => {
+            const hours = Math.floor((countdownTime % (60 * 60)) / 3600);
+            const minutes = Math.floor((countdownTime % 3600) / 60);
+            const seconds = countdownTime % 60;
+            countdownElement.textContent = \`Expires in: \${hours.toString().padStart(2, '0')}:\${minutes.toString().padStart(2, '0')}:\${seconds.toString().padStart(2, '0')}\`;
+            if (countdownTime > 0) countdownTime--;
+        }, 1000);
+    </script>
+</body>
+</html>
