@@ -1,0 +1,27 @@
+# tracker.py - Smart Expense Tracker
+print("Enter your expenses (amount, category)")
+print("Example: 10.50, coffee")
+print("Type 'done' when finished.\n")
+
+expenses = []
+while True:
+line = input("> ").strip()
+if line.lower() == 'done':
+break
+try:
+amount, category = line.split(',')
+amount = float(amount.strip())
+expenses.append((amount, category.strip()))
+except ValueError:
+print("Invalid input. Try again.")
+
+if expenses:
+total = sum(amount for amount, cat in expenses)
+print("\n--- Summary ---")
+print(f"Total spent: ${total:.2f}")
+print("Breakdown:")
+for amount, cat in expenses:
+print(f"${amount:.2f} on {cat}")
+print("---------------")
+else:
+print("No expenses entered.")
